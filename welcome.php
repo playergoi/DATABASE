@@ -20,20 +20,27 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 	$delivery=$_POST['delivery'];
 	$notes=$_POST['notes'];
     // $exists=false;
-
+	try {
+		// Attempt to execute your SQL query here
+		$sql1 = "INSERT INTO `userinfo` ( `name`, `email`,`city`, `phone`) VALUES ('$Name','$Email','$City', '$Phone')";
+		$sql2 = "INSERT INTO `productinfo` ( `product`, `quantity`,`delivery_date`, `note`,`name`) VALUES ('$product','$quantity','$delivery', '$notes','$Name')";
+		$result1 = mysqli_query($conn, $sql1);
+		$result2 = mysqli_query($conn, $sql2);
+		if ($result1 && $result2){
+			echo 'database inserted successfully';
+		}
+	
+	
+		} catch (mysqli_sql_exception $e) {
+		// Handle the exception here
+		echo "Error: " . $e->getMessage();
+	}
+	
         // $exists = false; 
-            $sql1 = "INSERT INTO `userinfo` ( `name`, `email`,`city`, `phone`) VALUES ('$Name','$Email','$City', '$Phone')";
-            $sql2 = "INSERT INTO `productinfo` ( `product`, `quantity`,`delivery_date`, `note`,`name`) VALUES ('$product','$quantity','$delivery', '$notes','$Name')";
-			$result1 = mysqli_query($conn, $sql1);
-			$result2 = mysqli_query($conn, $sql2);
-			if ($result1 && $result2){
-                echo 'database inserted successfully';
-            }
-        
-            else{
-                 echo 'try again';
-                }
-    }
+          	
+            
+			}
+
 
 	?>
 <!doctype html>
@@ -43,9 +50,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
   <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
- <link rel="stylesheet" type="text/css" href="sql.css">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<link rel="stylesheet" href="new.css">
 
     <title>Welcome - <?php $_SESSION['username']?></title>
   </head>
@@ -67,7 +74,8 @@ height: 100vh;
 	  <p class="mb-0"> </p>
     </div>
   </div>
-  <form action=welcome.php method='POST'>
+  <div class="style">
+	  <form action=welcome.php method='POST'>
 <div class='row'>
 	<div class="column">
 		
@@ -108,11 +116,13 @@ height: 100vh;
 		<textarea id="notes" name="notes"></textarea>
 		<br>
 
-		<input type="submit" value="Submit">
+		
 	
 	</div>
 	</div>
+	<input class='submit' type="submit" value="Submit">
 	</form>
+	</div>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
